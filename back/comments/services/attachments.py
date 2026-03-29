@@ -12,6 +12,7 @@ def get_file_extension(filename: str) -> str:
 
 
 def read_image_dimensions(file_obj) -> tuple[int, int]:
+    '''Reads the dimensions of an image file. Raises ValidationError if the file is not a valid image.'''
     try:
         file_obj.seek(0)
         with Image.open(file_obj) as image:
@@ -25,6 +26,7 @@ def read_image_dimensions(file_obj) -> tuple[int, int]:
 
 
 def resize_image_for_limits(file_obj, filename: str, max_width: int, max_height: int):
+    '''Resizes the image if it exceeds the specified maximum dimensions. Returns the new filename, content, and dimensions.'''
     file_obj.seek(0)
     with Image.open(file_obj) as image:
         if image.width <= max_width and image.height <= max_height:
@@ -44,5 +46,3 @@ def resize_image_for_limits(file_obj, filename: str, max_width: int, max_height:
         new_name = f"{Path(filename).stem}.{normalized_extension}"
 
     return new_name, ContentFile(buffer.read()), width, height
-
-

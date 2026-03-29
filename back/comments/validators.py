@@ -13,11 +13,13 @@ def username_validator() -> RegexValidator:
 
 
 def validate_attachment_kind(kind: str, allowed_kinds: set[str]):
+    '''Validator to ensure the attachment kind is one of the allowed types.'''
     if kind not in allowed_kinds:
         raise ValidationError({"kind": _("Unsupported attachment type.")})
 
 
 def validate_text_attachment(file_obj, extension: str, max_size_bytes: int):
+    '''Validator for text attachments to ensure they have the correct extension and size.'''
     if extension != "txt":
         raise ValidationError({"file": _("Text attachment must have .txt extension.")})
     if file_obj.size > max_size_bytes:
@@ -25,5 +27,6 @@ def validate_text_attachment(file_obj, extension: str, max_size_bytes: int):
 
 
 def validate_image_extension(extension: str, allowed_extensions: set[str]):
+    '''Validator for image attachments to ensure they have an allowed image extension.'''
     if extension not in allowed_extensions:
         raise ValidationError({"file": _("Image must be JPG, GIF, or PNG.")})
