@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
+
 import os
 import subprocess
 import sys
@@ -14,7 +15,9 @@ def main():
     settings_module = os.getenv("DJANGO_SETTINGS_MODULE")
     if not settings_module:
         mode = os.getenv("MODE", "DEV").upper()
-        settings_module = "config.settings.prod" if mode == "PROD" else "config.settings.dev"
+        settings_module = (
+            "config.settings.prod" if mode == "PROD" else "config.settings.dev"
+        )
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", settings_module)
 
     if len(sys.argv) > 1 and sys.argv[1] == "test":

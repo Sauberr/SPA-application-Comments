@@ -4,7 +4,6 @@ from rest_framework import serializers
 from comments.models import Attachment, Comment
 from comments.services import get_file_extension, verify_captcha
 
-
 # Tags and attributes the user is allowed to use in comment text.
 # Everything else is stripped by bleach to prevent XSS.
 ALLOWED_TAGS = ["a", "code", "i", "strong"]
@@ -46,7 +45,8 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class CommentCreateSerializer(serializers.ModelSerializer):
     """Write serializer — used when a user submits a new comment or reply.
-    Sanitizes HTML in `content`, validates CAPTCHA, and handles optional file attachment."""
+    Sanitizes HTML in `content`, validates CAPTCHA, and handles optional file attachment.
+    """
 
     captcha_key = serializers.CharField(write_only=True)
     captcha_value = serializers.CharField(write_only=True, max_length=20)
@@ -84,7 +84,9 @@ class CommentCreateSerializer(serializers.ModelSerializer):
         value = data.pop("captcha_value")
         if not verify_captcha(key, value):
             raise serializers.ValidationError(
-                {"captcha_value": "Invalid or expired CAPTCHA. Please refresh and try again."}
+                {
+                    "captcha_value": "Invalid or expired CAPTCHA. Please refresh and try again."
+                }
             )
         return data
 

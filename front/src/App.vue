@@ -1,7 +1,7 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import CommentList from './components/CommentList.vue'
 </script>
 
 <template>
-  <HelloWorld />
+  <CommentList />
 </template>

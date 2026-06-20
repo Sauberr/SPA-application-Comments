@@ -1,0 +1,148 @@
+.comment {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.comment-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 14px 6px 6px;
+  border-radius: 0;
+  background: var(--accent-bg);
+}
+
+.avatar {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  box-shadow: 0 0 0 4px var(--bg);
+}
+
+.comment-main {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-left: 60px;
+}
+
+.comment-main--reply {
+  padding-left: 0;
+}
+
+.head-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.author {
+  font-weight: 700;
+  color: var(--text-h);
+  font-size: 15px;
+}
+
+.date {
+  font-size: 13px;
+  color: var(--text-h);
+}
+
+.head-icons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.head-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  padding: 0;
+  color: #60a5fa;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.head-icon-btn:hover {
+  color: #93c5fd;
+}
+
+.head-icon-btn .icon {
+  width: 16px;
+  height: 16px;
+}
+
+.comment-body {
+  text-align: left;
+  font-size: 15px;
+  line-height: 150%;
+  color: var(--text-h);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.comment-body :deep(code) {
+  font-size: 13px;
+}
+
+.comment-body :deep(a) {
+  color: var(--text-h);
+  text-decoration: underline;
+}
+
+.comment-actions {
+  display: flex;
+  gap: 18px;
+  margin-top: 2px;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  font-size: 13px;
+  color: var(--text);
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.action-btn:hover {
+  color: var(--text-h);
+}
+
+.icon {
+  width: 17px;
+  height: 17px;
+}
+
+.replies {
+  margin-top: 14px;
+  padding: 14px 14px 14px 16px;
+  border-left: 3px solid #3b82f6;
+  background: var(--code-bg);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}

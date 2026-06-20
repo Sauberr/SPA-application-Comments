@@ -1,16 +1,11 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from comments.services import (
-    get_file_extension,
-    read_image_dimensions,
-    resize_image_for_limits,
-)
-from comments.validators import (
-    validate_attachment_kind,
-    validate_image_extension,
-    validate_text_attachment,
-)
+from comments.services import (get_file_extension, read_image_dimensions,
+                               resize_image_for_limits)
+from comments.validators import (validate_attachment_kind,
+                                 validate_image_extension,
+                                 validate_text_attachment)
 from core.models import TimeStampedModel
 
 
@@ -35,18 +30,18 @@ class Attachment(TimeStampedModel):
         on_delete=models.CASCADE,
         related_name="attachments",
         verbose_name=_("Comment"),
-        help_text=_("The comment this attachment is associated with.")
+        help_text=_("The comment this attachment is associated with."),
     )
     file = models.FileField(
-        upload_to='attachments/',
+        upload_to="attachments/",
         verbose_name=_("File"),
-        help_text=_("The file attached to the comment.")
+        help_text=_("The file attached to the comment."),
     )
     kind = models.CharField(
         choices=KIND_CHOICES,
         max_length=20,
         verbose_name=_("Kind"),
-        help_text=_("The type of the attachment (e.g., image, text).")
+        help_text=_("The type of the attachment (e.g., image, text)."),
     )
     size_bytes = models.PositiveIntegerField(
         default=0,
@@ -57,13 +52,13 @@ class Attachment(TimeStampedModel):
         null=True,
         blank=True,
         verbose_name=_("Image Width"),
-        help_text=_("The width of the image in pixels (if applicable).")
+        help_text=_("The width of the image in pixels (if applicable)."),
     )
     image_height = models.PositiveIntegerField(
         null=True,
         blank=True,
         verbose_name=_("Image Height"),
-        help_text=_("The height of the image in pixels (if applicable).")
+        help_text=_("The height of the image in pixels (if applicable)."),
     )
 
     def _set_file_size(self):
@@ -124,4 +119,4 @@ class Attachment(TimeStampedModel):
     class Meta:
         verbose_name = _("Attachment")
         verbose_name_plural = _("Attachments")
-        ordering = ['-created_at']
+        ordering = ["-created_at"]

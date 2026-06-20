@@ -2,7 +2,6 @@
 
 import os
 
-
 MODE_TO_SETTINGS = {
     "DEV": "config.settings.dev",
     "PROD": "config.settings.prod",
@@ -16,4 +15,3 @@ def resolve_settings_module() -> str:
 
     mode = os.getenv("MODE", "DEV").upper()
     return MODE_TO_SETTINGS.get(mode, MODE_TO_SETTINGS["DEV"])
-

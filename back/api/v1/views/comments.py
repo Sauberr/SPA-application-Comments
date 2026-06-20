@@ -3,8 +3,10 @@ from rest_framework import generics, status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 
-from api.v1.serializers.comments import CommentCreateSerializer, CommentSerializer
+from api.v1.serializers.comments import (CommentCreateSerializer,
+                                         CommentSerializer)
 from comments.models import Attachment, Comment
+from comments.services import broadcast_new_comment
 
 
 class CommentPagination(PageNumberPagination):
@@ -26,9 +28,12 @@ class CommentListCreateView(generics.ListCreateAPIView):
     pagination_class = CommentPagination
 
     _ALLOWED_SORT_FIELDS = {
-        "username", "-username",
-        "email", "-email",
-        "created_at", "-created_at",
+        "username",
+        "-username",
+        "email",
+        "-email",
+        "created_at",
+        "-created_at",
     }
     _DEFAULT_SORT = "-created_at"
 
@@ -47,8 +52,7 @@ class CommentListCreateView(generics.ListCreateAPIView):
         )
 
         return (
-            Comment.objects
-            .filter(reply_to__isnull=True)
+            Comment.objects.filter(reply_to__isnull=True)
             .prefetch_related(
                 Prefetch("attachments", queryset=Attachment.objects.all()),
                 Prefetch("children", queryset=children_qs),
@@ -65,10 +69,9 @@ class CommentListCreateView(generics.ListCreateAPIView):
         serializer = CommentCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         comment = serializer.save()
-        return Response(
-            CommentSerializer(comment, context={"request": request}).data,
-            status=status.HTTP_201_CREATED,
-        )
+        data = CommentSerializer(comment, context={"request": request}).data
+        broadcast_new_comment(data)
+        return Response(data, status=status.HTTP_201_CREATED)
 
 
 class CommentDetailView(generics.RetrieveAPIView):

@@ -4,42 +4,43 @@ from pathlib import Path
 
 from decouple import Csv, config
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 SECRET_KEY = config(
-	"DJANGO_SECRET_KEY",
-	default="django-insecure--&%5mmm_9tv+^bwj#3k5#*i1&$qhr$goj$ogr-@vau0x(--=$k",
+    "DJANGO_SECRET_KEY",
+    default="django-insecure--&%5mmm_9tv+^bwj#3k5#*i1&$qhr$goj$ogr-@vau0x(--=$k",
 )
 
 INSTALLED_APPS = [
+    # ASGI / WebSocket support — must stay above django.contrib.staticfiles
+    # so `runserver` is replaced with Channels' ASGI-aware dev server.
+    "daphne",
+    "channels",
     # Default Django apps
-	"django.contrib.admin",
-	"django.contrib.auth",
-	"django.contrib.contenttypes",
-	"django.contrib.sessions",
-	"django.contrib.messages",
-	"django.contrib.staticfiles",
-
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
     # Local apps
-	"core",
-	"comments",
-
+    "core",
+    "comments",
     # Third-party apps
-	"corsheaders",
-	"rest_framework",
+    "corsheaders",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
-	"django.middleware.security.SecurityMiddleware",
-	"django.contrib.sessions.middleware.SessionMiddleware",
-	"corsheaders.middleware.CorsMiddleware",
-	"django.middleware.common.CommonMiddleware",
-	"django.middleware.csrf.CsrfViewMiddleware",
-	"django.contrib.auth.middleware.AuthenticationMiddleware",
-	"django.contrib.messages.middleware.MessageMiddleware",
-	"django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -63,14 +64,14 @@ WSGI_APPLICATION = "config.wsgi.application"
 ASGI_APPLICATION = "config.asgi.application"
 
 DATABASES = {
-	"default": {
-		"ENGINE": config("DB_ENGINE", default="django.db.backends.sqlite3"),
-		"NAME": config("DB_NAME", default=str(BASE_DIR / "db.sqlite3")),
-		"USER": config("DB_USER", default=""),
-		"PASSWORD": config("DB_PASSWORD", default=""),
-		"HOST": config("DB_HOST", default=""),
-		"PORT": config("DB_PORT", default=""),
-	}
+    "default": {
+        "ENGINE": config("DB_ENGINE", default="django.db.backends.sqlite3"),
+        "NAME": config("DB_NAME", default=str(BASE_DIR / "db.sqlite3")),
+        "USER": config("DB_USER", default=""),
+        "PASSWORD": config("DB_PASSWORD", default=""),
+        "HOST": config("DB_HOST", default=""),
+        "PORT": config("DB_PORT", default=""),
+    }
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -98,3 +99,16 @@ CORS_ALLOWED_ORIGINS = config("CORS_ALLOWED_ORIGINS", default="", cast=Csv())
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [
+                (
+                    config("REDIS_HOST", default="127.0.0.1"),
+                    config("REDIS_PORT", default=6379, cast=int),
+                ),
+            ],
+        },
+    },
+}

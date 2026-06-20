@@ -78,7 +78,11 @@ def _render_image(text: str) -> str:
                 (random.randint(0, width), random.randint(0, height)),
                 (random.randint(0, width), random.randint(0, height)),
             ],
-            fill=(random.randint(100, 180), random.randint(100, 180), random.randint(100, 180)),
+            fill=(
+                random.randint(100, 180),
+                random.randint(100, 180),
+                random.randint(100, 180),
+            ),
             width=1,
         )
 

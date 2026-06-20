@@ -10,10 +10,10 @@ https://docs.djangoproject.com/en/5.2/howto/deployment/wsgi/
 import os
 from pathlib import Path
 
-from config.settings_selector import resolve_settings_module
 from django.core.wsgi import get_wsgi_application
 from dotenv import load_dotenv
 
+from config.settings_selector import resolve_settings_module
 
 load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 

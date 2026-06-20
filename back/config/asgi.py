@@ -13,13 +13,27 @@ from pathlib import Path
 from django.core.asgi import get_asgi_application
 from dotenv import load_dotenv
 
-
 load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 settings_module = os.getenv("DJANGO_SETTINGS_MODULE")
 if not settings_module:
-	mode = os.getenv("MODE", "DEV").upper()
-	settings_module = "config.settings.prod" if mode == "PROD" else "config.settings.dev"
+    mode = os.getenv("MODE", "DEV").upper()
+    settings_module = (
+        "config.settings.prod" if mode == "PROD" else "config.settings.dev"
+    )
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", settings_module)
 
-application = get_asgi_application()
+# get_asgi_application() must run first — it calls django.setup(), which
+# comments.routing needs before it can import the Comment model/consumers.
+django_asgi_app = get_asgi_application()
+
+from channels.routing import ProtocolTypeRouter, URLRouter  # noqa: E402
+
+from comments.routing import websocket_urlpatterns  # noqa: E402
+
+application = ProtocolTypeRouter(
+    {
+        "http": django_asgi_app,
+        "websocket": URLRouter(websocket_urlpatterns),
+    }
+)
