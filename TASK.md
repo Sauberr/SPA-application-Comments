@@ -10,7 +10,7 @@ to a relational database, including user identification data.
 ## Required Technologies
 
 - Object-oriented programming (OOP)
-- SQL (PostgreSQL preferred)
+- SQL (MySQL preferred)
 - Django + Django ORM
 - Vue (preferred), React, or Angular
 - Docker
